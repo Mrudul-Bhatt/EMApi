@@ -16,8 +16,7 @@ namespace ServiceContracts.DTO
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Phone number cannot be empty!")]
-        [Phone(ErrorMessage = "Phone number is invalid!")]
-        public int Phone { get; set; }
+        public string Phone { get; set; }
 
         [Required(ErrorMessage = "Date of Birth cannot be empty!")]
         public DateTime DateOfBirth { get; set; }

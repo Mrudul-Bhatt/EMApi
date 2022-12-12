@@ -23,7 +23,7 @@ public class DepartmentsController : Controller
 
     [HttpGet]
     [Route("{id:guid}")]
-    public async Task<IActionResult> GetDepartmentById(Guid? id)
+    public async Task<IActionResult> GetDepartmentById([FromRoute] Guid? id)
     {
         if (id == null) return BadRequest("Id is null");
 

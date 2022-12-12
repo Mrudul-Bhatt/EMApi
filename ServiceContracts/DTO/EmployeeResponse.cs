@@ -10,13 +10,13 @@ public class EmployeeResponse
 
     public string Email { get; set; }
 
-    public int Phone { get; set; }
+    public string Phone { get; set; }
 
     public DateTime? DateOfBirth { get; set; }
 
     public Guid DepartmentId { get; set; }
 
-    public string DepartmentName { get; set; }
+    public string? DepartmentName { get; set; }
 
     public double? Age { get; set; }
 }
@@ -33,7 +33,8 @@ public static class EmployeeExtensions
             Phone = employee.Phone,
             DateOfBirth = employee.DateOfBirth,
             DepartmentId = employee.DepartmentId,
-            DepartmentName = employee.Department.DepartmentName,
+            //AddEmployee does not return response with DepartmentName when adding Employee. Only GetAllEmployees and GetEmployeeById return DepartmentName. So we will get exception if we try to convert response from AddEmployee to EmployeeResponse object because we dont have DepartmentName, so always add ? check on nullable fields to avoid exceptions
+            DepartmentName = employee.Department?.DepartmentName,
             Age = employee.DateOfBirth != null
                 ? Math.Round((DateTime.Now - employee.DateOfBirth.Value).TotalDays / 365.25)
                 : 0
