@@ -1,15 +1,19 @@
 using Entities;
 using Microsoft.EntityFrameworkCore;
+using Repositories;
+using RepositoryContracts;
+using ServiceContracts;
+using Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// builder.Services.AddTransient<IEmployeesService, EmployeesService>();
-// builder.Services.AddTransient<IDepartmentsService, DepartmentsService>();
-// builder.Services.AddTransient<IEmployeesRepository, EmployeesRepository>();
-// builder.Services.AddTransient<IDepartmentsRepository, DepartmentsRepository>();
+builder.Services.AddTransient<IEmployeesService, EmployeesService>();
+builder.Services.AddTransient<IDepartmentsService, DepartmentsService>();
+builder.Services.AddTransient<IEmployeesRepository, EmployeesRepository>();
+builder.Services.AddTransient<IDepartmentsRepository, DepartmentsRepository>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnectionString")));
@@ -27,6 +31,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(policyName => policyName.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
 app.UseAuthorization();
 

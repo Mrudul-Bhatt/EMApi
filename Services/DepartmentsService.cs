@@ -25,9 +25,10 @@ public class DepartmentsService : IDepartmentsService
 
         var employee = await _departmentsRepository.GetDepartmentById(departmentId);
 
-        if (employee == null) throw new ArgumentException();
+        // since response is nullable we should return null if no dept is found wrt the given Id so that client knows that dept wrt this Id DNE, we should not throw exception as then we will not be able to give NotFound result to client on frontend 
+        // if (employee == null) throw new ArgumentException();
 
-        return employee.ToDepartmentResponse();
+        return employee?.ToDepartmentResponse();
     }
 
     public async Task<DepartmentResponse> AddDepartment(AddDepartmentRequest addDepartmentRequest)
@@ -47,7 +48,7 @@ public class DepartmentsService : IDepartmentsService
         var matchingDepartment =
             await _departmentsRepository.GetDepartmentById(updateDepartmentRequest.DepartmentId);
 
-        if (matchingDepartment == null) throw new ArgumentException();
+        if (matchingDepartment == null) return false;
 
         matchingDepartment.DepartmentName = updateDepartmentRequest.DepartmentName;
 
@@ -60,7 +61,7 @@ public class DepartmentsService : IDepartmentsService
 
         var department = await _departmentsRepository.GetDepartmentById(departmentId);
 
-        if (department == null) throw new ArgumentException();
+        if (department == null) return false;
 
         return await _departmentsRepository.DeleteDepartment(departmentId);
     }
