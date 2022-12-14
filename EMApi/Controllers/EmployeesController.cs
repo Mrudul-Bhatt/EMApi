@@ -1,9 +1,13 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceContracts;
 using ServiceContracts.DTO;
 
 namespace EMApi.Controllers;
 
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[ApiController]
 [Route("api/[controller]/[action]")]
 public class EmployeesController : Controller
 {
@@ -40,6 +44,7 @@ public class EmployeesController : Controller
 
             return BadRequest(errors);
         }
+
         var employee = await _employeesService.AddEmployee(addEmployeeRequest);
         return Ok(employee);
     }
@@ -54,6 +59,7 @@ public class EmployeesController : Controller
 
             return BadRequest(errors);
         }
+
         var result = await _employeesService.UpdateEmployee(updateEmployeeRequest);
         if (!result) return NotFound("Employee does not exist!");
         return Ok(result);
